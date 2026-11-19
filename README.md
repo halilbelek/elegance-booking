@@ -6,4 +6,5 @@ Siden indeholder ingen data. Den taler med Google Apps Script-projektet "Eleganc
 (regnearket "Elegance – Fakturering") og er beskyttet af en PIN-kode, der står i regnearkets
 ark Indstillinger.
 
-`index.html` genereres fra `App.gs` (funktionen `appHtml_(apiUrl)`) – ret ikke i den direkte.
+`index.html` er selve appen og rettes direkte her. Pakker og tilvalg styres fra arket "Pakker" i regnearket.
+PIN-koden huskes på telefonen i 8 timer efter sidste brug.

@@ -1,1 +1,357 @@
-<!DOCTYPE html><html lang="da"><head><meta charset="utf-8"><base target="_top"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>Elegance Booking</title><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="icon-180.png"><link rel="manifest" href="manifest.json"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Elegance"><meta name="theme-color" content="#2b2b2b"><style>*{box-sizing:border-box}body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f6f2ea;color:#2b2b2b}header{background:#2b2b2b;color:#fff;padding:18px 16px 14px;text-align:center}header .t{font-size:13px;letter-spacing:3px;color:#d8c08f}header .h{font-size:22px;margin-top:2px}.kort{background:#fff;margin:12px;border-radius:14px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,.08)}h2{font-size:15px;margin:0 0 8px;color:#9a7b3c;letter-spacing:.5px}label{display:block;font-size:12px;color:#777;margin:10px 0 3px}input,textarea,select{width:100%;font-size:16px;padding:11px;border:1px solid #ddd3bd;border-radius:10px;background:#fffdf8;font-family:inherit;color:#2b2b2b}textarea{min-height:110px}.r{display:flex;gap:8px}.r>div{flex:1}button{width:100%;font-size:17px;padding:14px;border:0;border-radius:12px;background:#9a7b3c;color:#fff;margin-top:14px;font-weight:600}button.lys{background:#fff;color:#9a7b3c;border:1.5px solid #9a7b3c;font-size:15px;padding:10px;margin-top:8px}button.graa{background:#eee;color:#555;font-size:15px;padding:10px;margin-top:8px}.knapper{display:flex;gap:6px}.knapper button{flex:1;font-size:14px;padding:9px 4px;margin-top:8px}button:disabled{opacity:.5}details{margin-top:10px}summary{color:#9a7b3c;font-size:14px}#svar{display:none}.ok{color:#2e7d32;font-weight:600}.fejl{color:#c62828;font-weight:600;white-space:pre-wrap}.b{border-top:1px solid #eee;padding:12px 0}.b:first-child{border-top:0}.b .d{font-weight:600}.b .s{font-size:13px;color:#777;margin-top:2px}.st{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;margin-left:6px;font-weight:600}.Reserveret{background:#fff2cc}.Kontrakt.sendt{background:#fce5cd}.Bekræftet{background:#d9ead3}.Afholdt{background:#eee}.Annulleret{background:#f4cccc}.lille{font-size:12px;color:#999;text-align:center;margin:10px 0 24px}#laas{position:fixed;inset:0;background:#2b2b2b;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;z-index:9}#laas input{max-width:220px;text-align:center;font-size:28px;letter-spacing:10px;margin-top:16px}#laas button{max-width:220px}#laas .t{font-size:13px;letter-spacing:3px;color:#d8c08f}#pinmsg{color:#ffb4a8;margin-top:12px;min-height:20px}#kvis{position:fixed;inset:0;background:#fff;display:none;flex-direction:column;z-index:8}#kvis .top{display:flex;gap:8px;padding:8px;background:#2b2b2b}#kvis .top button{margin:0;padding:10px;font-size:15px}#kframe{flex:1;border:0;width:100%}.hj{font-size:12px;color:#888;margin-top:6px}#retbar{display:none;background:#fff2cc;border-radius:10px;padding:8px 10px;font-size:14px;margin-bottom:6px}</style></head><body><div id="laas"><div class="t">ELEGANCE ILAYDA</div><div style="font-size:20px;margin-top:4px">Booking</div><input id="pin" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN" onkeyup="if(event.key==='Enter')laasOp()"><button onclick="laasOp()">Lås op</button><div id="pinmsg"></div></div><div id="kvis"><div class="top"><button class="graa" onclick="lukK()">← Tilbage</button><button id="ksend" onclick="sendFraVis()">Send til kunden</button></div><iframe id="kframe"></iframe></div><header><div class="t">ELEGANCE ILAYDA</div><div class="h" id="titel">Ny booking</div></header><div class="kort" id="form"><div id="retbar">Du retter en booking. Kontrakten laves om, når du gemmer.</div><label>Kundens navn *</label><input id="navn" autocomplete="off"><label>Dato *</label><input id="dato" type="date"><div class="r"><div><label>Fra</label><input id="fra" type="time" value="16:00"></div><div><label>Til</label><input id="til" type="time" value="01:00"></div></div><div class="r"><div><label>Telefon</label><input id="tlf" type="tel"></div><div><label>Gæster</label><input id="gaester"></div></div><label>E-mail (til kontrakten)</label><input id="email" type="email" autocapitalize="off"><label>Anledning</label><input id="anledning" list="anl" placeholder="fx Bryllup"><datalist id="anl"><option>Bryllup</option><option>Vielse</option><option>Forlovelse</option><option>Henna</option><option>Fødselsdag</option><option>Konfirmation</option><option>Navngivning</option><option>Firmafest</option></datalist><div class="r"><div><label>Lejebeløb (kr.)</label><input id="leje" inputmode="decimal" placeholder="aftales senere"></div><div><label>Depositum (kr.)</label><input id="depositum" inputmode="decimal"></div></div><div id="statusfelt" style="display:none"><label>Status</label><select id="status"><option>Reserveret</option><option>Kontrakt sendt</option><option>Bekræftet</option><option>Afholdt</option><option>Annulleret</option></select></div><details id="flere"><summary>Kontrakttekst og flere oplysninger</summary><label>Aftale / særlige ønsker (står i kontrakten)</label><textarea id="aftale" placeholder="fx Kun reception. Mad leveres af lejer. Tilkøb: frugtbord 18 kr. pr. gæst"></textarea><label>Form</label><input id="form2" list="frm" placeholder="fx Reception"><datalist id="frm"><option>Fest</option><option>Reception</option><option>Middag</option><option>Kun leje af lokale</option></datalist><label>Pakke</label><input id="pakke"><label>Adresse</label><input id="adresse"><div class="r"><div><label>Postnr.</label><input id="postnr" inputmode="numeric"></div><div><label>By</label><input id="by"></div></div><label>Note (kun til dig)</label><input id="note"></details><details id="detalj"><summary>Detaljer – dekoration, brød, baklava, kage (kun til os)</summary><div class="hj">Kommer ikke med i kontrakten. Brød, baklava og kage står i påmindelsen i kalenderen 7 dage før.</div><label>Dekoration</label><textarea id="dekoration" placeholder="fx Hvid/guld, buegang ved scenen, lysestager på bordene"></textarea><label>Farvetema / duge / servietter</label><input id="farver" placeholder="fx Hvide duge, guld servietter"><label>Blomster</label><input id="blomster"><label>Brød</label><input id="broed" placeholder="fx 25 pitabrød + 10 franskbrød"><label>Baklava</label><input id="baklava" placeholder="fx 3 bakker, pistacie"><label>Kage</label><input id="kage" placeholder="fx 3-etagers, 200 pers., hvid"><label>Andre detaljer</label><textarea id="detaljer"></textarea></details><button id="gem" onclick="gem(false)">Book dagen</button><button id="fortryd" class="graa" style="display:none" onclick="nulstil()">Fortryd rettelser</button></div><div class="kort" id="svar"></div><div class="kort"><h2>Kommende bookinger og kontrakter</h2><div id="liste">Henter…</div></div><div class="lille">Bookinger gemmes i regnearket og kalenderen "Elegance – Bookinger"</div><script>var API="https://script.google.com/macros/s/AKfycbww6s9305g46CVvGpYIyWjhPAwpc6s5nsQgodA60KxuaG0FwwmOSlMkXH0DX2-NbpY/exec";window.google={script:{run:(function mk(ok,fail){var o={withSuccessHandler:function(f){return mk(f,fail);},withFailureHandler:function(f){return mk(ok,f);}};["appData","appGemBooking","appHentBooking","appRetBooking","appKontraktHtml","appSendKontrakt"].forEach(function(n){o[n]=function(){var a=[].slice.call(arguments);fetch(API,{method:"POST",credentials:"omit",redirect:"follow",body:JSON.stringify({fn:n,args:a})}).then(function(r){return r.json();}).then(function(j){if(j.ok){if(ok)ok(j.data);}else if(fail)fail(new Error(j.fejl));}).catch(function(e){if(fail)fail(new Error("Ingen forbindelse til regnearket. Tjek internettet og prøv igen."));});};});return o;})()}};</script><script>function el(i){return document.getElementById(i);}function esc(s){return String(s||"").replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}var P="",RET="",VIS="",DEP="";try{P=localStorage.getItem("elegancePin")||"";}catch(e){}var FELTER=["navn","dato","fra","til","tlf","gaester","email","anledning","leje","depositum","aftale","pakke","adresse","postnr","by","note","dekoration","farver","blomster","broed","baklava","kage","detaljer"];var DET=["dekoration","farver","blomster","broed","baklava","kage","detaljer"];function laast(m){try{localStorage.removeItem("elegancePin");}catch(e){}P="";el("laas").style.display="flex";el("pinmsg").textContent=m||"";}function fejl(e,hvor){if(String(e.message).indexOf("PINFEJL")>=0)return laast("Forkert PIN-kode");if(/For mange|PIN-kode endnu/.test(e.message))return laast(e.message);hvor(e);}function kald(navn,args,ok,hvor){var r=google.script.run.withSuccessHandler(ok).withFailureHandler(function(e){fejl(e,hvor||function(x){alert("Fejl: "+x.message);});});r[navn].apply(r,args);}function laasOp(){var p=el("pin").value.trim();if(!p)return;el("pinmsg").textContent="Tjekker…";kald("appData",[p],function(d){P=p;try{localStorage.setItem("elegancePin",p);}catch(e){}el("laas").style.display="none";el("pin").value="";vis(d);},function(x){el("pinmsg").textContent=x.message;});}function hent(){if(!P){laast("");return;}kald("appData",[P],function(d){el("laas").style.display="none";vis(d);},function(x){el("liste").innerHTML="<span class=fejl>"+esc(x.message)+"</span>";});}function vis(d){DEP=d.depositum;if(!RET&&!el("depositum").value)el("depositum").value=DEP;if(!d.kommende.length){el("liste").innerHTML="Ingen kommende bookinger.";return;}el("liste").innerHTML=d.kommende.map(function(b){var aktiv=b.status!=="Annulleret";return "<div class=b><div class=d>"+esc(b.dato)+" <span class=\""+esc(b.status)+" st\">"+esc(b.status)+"</span></div>"+"<div class=s>"+esc(b.nr)+" · "+esc(b.kunde)+(b.anledning?" · "+esc(b.anledning):"")+(b.gaester?" · "+esc(b.gaester)+" gæster":"")+(b.tid?" · "+esc(b.tid):"")+"</div>"+"<div class=s>"+(b.sendt?"Kontrakt sendt":(b.kontrakt?"Kontrakt klar – ikke sendt":"Ingen kontrakt endnu"))+(b.email?"":" · mangler e-mail")+"</div>"+"<div class=knapper><button class=lys onclick=\"ret('"+b.nr+"')\">Ret / detaljer</button>"+(aktiv?"<button class=lys onclick=\"visK('"+b.nr+"')\">Se kontrakt</button>":"")+(aktiv&&b.email?"<button class=lys onclick=\"send('"+b.nr+"',this)\">"+(b.sendt?"Send igen":"Send")+"</button>":"")+"</div></div>";}).join("");}function felter(){var f={};FELTER.forEach(function(x){f[x]=el(x).value;});f.form=el("form2").value;f.status=el("status").value;f.pin=P;return f;}function nulstil(){RET="";FELTER.forEach(function(x){el(x).value="";});el("form2").value="";el("fra").value="16:00";el("til").value="01:00";el("depositum").value=DEP;el("titel").textContent="Ny booking";el("gem").textContent="Book dagen";el("fortryd").style.display="none";el("statusfelt").style.display="none";el("retbar").style.display="none";el("flere").open=false;el("detalj").open=false;}function ret(nr){kald("appHentBooking",[nr,P],function(b){RET=nr;FELTER.forEach(function(x){el(x).value=(b[x]===undefined||b[x]===null)?"":b[x];});el("form2").value=b.form||"";el("status").value=b.status;el("titel").textContent="Ret booking "+nr;el("gem").textContent="Gem og lav kontrakten om";el("fortryd").style.display="block";el("statusfelt").style.display="block";el("retbar").style.display="block";el("flere").open=true;el("detalj").open=DET.some(function(x){return !!b[x];});el("svar").style.display="none";window.scrollTo(0,0);});}function resultat(r,email){var s=el("svar");s.style.display="block";s.innerHTML="<div class=ok>✓ "+esc(r.besked).replace(/\n/g,"<br>")+"</div>"+(r.kontraktFejl?"<p class=fejl>Kontrakten kunne ikke laves: "+esc(r.kontraktFejl)+"</p>":"<div class=knapper><button class=lys onclick=\"visK('"+r.nr+"')\">Se kontrakt</button>"+(email?"<button class=lys onclick=\"send('"+r.nr+"',this)\">"+(r.sendt?"Send igen":"Send til kunden")+"</button>":"")+"</div>")+(email?"":"<p class=s>Tilføj e-mail for at kunne sende kontrakten.</p>");}function gem(tving){var f=felter();if(!f.navn.trim()||!f.dato){alert("Skriv navn og dato.");return;}f.tving=tving;if(RET)f.nr=RET;var b=el("gem"),tekst=b.textContent;b.disabled=true;b.textContent="Gemmer…";kald(RET?"appRetBooking":"appGemBooking",[f],function(r){b.disabled=false;b.textContent=tekst;if(r.konflikt){if(confirm(r.konflikt+"\n\nVil du gemme alligevel?"))gem(true);return;}nulstil();resultat(r,f.email);window.scrollTo(0,0);hent();},function(x){b.disabled=false;b.textContent=tekst;alert("Fejl: "+x.message);});}function visK(nr){VIS=nr;el("ksend").disabled=false;el("ksend").textContent="Send til kunden";el("kframe").srcdoc="<p style=\"font-family:Arial;padding:20px\">Henter kontrakten…</p>";el("kvis").style.display="flex";kald("appKontraktHtml",[nr,P],function(h){el("kframe").srcdoc=h;},function(x){el("kframe").srcdoc="<p style=\"font-family:Arial;padding:20px;color:#c62828\">"+esc(x.message)+"</p>";});}function lukK(){el("kvis").style.display="none";VIS="";}function sendFraVis(){if(VIS)send(VIS,el("ksend"));}function send(nr,knap){if(!confirm("Send lejekontrakten for "+nr+" til kunden nu?"))return;var t=knap.textContent;knap.disabled=true;knap.textContent="Sender…";kald("appSendKontrakt",[nr,P],function(m){knap.textContent="✓ Sendt";alert(m);hent();},function(x){knap.disabled=false;knap.textContent=t;alert("Fejl: "+x.message);});}hent();</script></body></html>
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<base target="_top">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Elegance Booking</title>
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-180.png">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Elegance">
+<meta name="theme-color" content="#2b2b2b">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f6f2ea;color:#2b2b2b}
+header{background:#2b2b2b;color:#fff;padding:18px 16px 14px;text-align:center}
+header .t{font-size:13px;letter-spacing:3px;color:#d8c08f}
+header .h{font-size:22px;margin-top:2px}
+.kort{background:#fff;margin:12px;border-radius:14px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+h2{font-size:15px;margin:0 0 8px;color:#9a7b3c;letter-spacing:.5px}
+label{display:block;font-size:12px;color:#777;margin:10px 0 3px}
+input,textarea,select{width:100%;font-size:16px;padding:11px;border:1px solid #ddd3bd;border-radius:10px;background:#fffdf8;font-family:inherit;color:#2b2b2b}
+textarea{min-height:110px}
+.r{display:flex;gap:8px}.r>div{flex:1}
+button{width:100%;font-size:17px;padding:14px;border:0;border-radius:12px;background:#9a7b3c;color:#fff;margin-top:14px;font-weight:600}
+button.lys{background:#fff;color:#9a7b3c;border:1.5px solid #9a7b3c;font-size:15px;padding:10px;margin-top:8px}
+button.graa{background:#eee;color:#555;font-size:15px;padding:10px;margin-top:8px}
+.knapper{display:flex;gap:6px}.knapper button{flex:1;font-size:14px;padding:9px 4px;margin-top:8px}
+button:disabled{opacity:.5}
+details{margin-top:10px}summary{color:#9a7b3c;font-size:14px}
+#svar{display:none}
+.ok{color:#2e7d32;font-weight:600}
+.fejl{color:#c62828;font-weight:600;white-space:pre-wrap}
+.b{border-top:1px solid #eee;padding:12px 0}.b:first-child{border-top:0}
+.b .d{font-weight:600}.b .s{font-size:13px;color:#777;margin-top:2px}
+.st{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;margin-left:6px;font-weight:600}
+.Reserveret{background:#fff2cc}.Kontrakt.sendt{background:#fce5cd}.Bekræftet{background:#d9ead3}.Afholdt{background:#eee}.Annulleret{background:#f4cccc}
+.lille{font-size:12px;color:#999;text-align:center;margin:10px 0 24px}
+#laas{position:fixed;inset:0;background:#2b2b2b;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;z-index:9}
+#laas input{max-width:220px;text-align:center;font-size:28px;letter-spacing:10px;margin-top:16px}
+#laas button{max-width:220px}
+#laas .t{font-size:13px;letter-spacing:3px;color:#d8c08f}
+#pinmsg{color:#ffb4a8;margin-top:12px;min-height:20px;text-align:center}
+#pintjek{display:none;color:#d8c08f;margin-top:18px}
+#kvis{position:fixed;inset:0;background:#fff;display:none;flex-direction:column;z-index:8}
+#kvis .top{display:flex;gap:8px;padding:8px;background:#2b2b2b}
+#kvis .top button{margin:0;padding:10px;font-size:15px}
+#kframe{flex:1;border:0;width:100%}
+.hj{font-size:12px;color:#888;margin-top:6px}
+#retbar{display:none;background:#fff2cc;border-radius:10px;padding:8px 10px;font-size:14px;margin-bottom:6px}
+.valg{display:flex;flex-direction:column;gap:6px}
+.valg.to{flex-direction:row;flex-wrap:wrap}
+.chk{display:flex;align-items:center;gap:10px;margin:0;padding:10px 12px;border:1px solid #ddd3bd;border-radius:10px;background:#fffdf8;font-size:15px;color:#2b2b2b}
+.valg.to .chk{flex:1 1 40%}
+.chk input{width:20px;height:20px;margin:0;flex:0 0 auto;accent-color:#9a7b3c}
+.chk .pris{margin-left:auto;font-size:13px;color:#9a7b3c;white-space:nowrap}
+.chk.valgt{border-color:#9a7b3c;background:#fbf5e8}
+</style>
+</head>
+<body>
+
+<div id="laas">
+  <div class="t">ELEGANCE ILAYDA</div>
+  <div style="font-size:20px;margin-top:4px">Booking</div>
+  <div id="pinindtast" style="width:100%;display:flex;flex-direction:column;align-items:center">
+    <input id="pin" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN" onkeyup="if(event.key==='Enter')laasOp()">
+    <button id="pinknap" onclick="laasOp()">Lås op</button>
+  </div>
+  <div id="pintjek">Låser op…</div>
+  <div id="pinmsg"></div>
+</div>
+
+<div id="kvis">
+  <div class="top">
+    <button class="graa" onclick="lukK()">← Tilbage</button>
+    <button id="ksend" onclick="sendFraVis()">Send til kunden</button>
+  </div>
+  <iframe id="kframe"></iframe>
+</div>
+
+<header><div class="t">ELEGANCE ILAYDA</div><div class="h" id="titel">Ny booking</div></header>
+
+<div class="kort" id="form">
+  <div id="retbar">Du retter en booking. Kontrakten laves om, når du gemmer.</div>
+  <label>Kundens navn *</label><input id="navn" autocomplete="off">
+  <label>Dato *</label><input id="dato" type="date">
+  <div class="r"><div><label>Fra</label><input id="fra" type="time" value="16:00"></div><div><label>Til</label><input id="til" value="24:00" readonly style="color:#777"></div></div>
+  <div class="r"><div><label>Telefon</label><input id="tlf" type="tel"></div><div><label>Gæster</label><input id="gaester"></div></div>
+  <label>E-mail (til kontrakten)</label><input id="email" type="email" autocapitalize="off">
+  <label>Anledning</label><input id="anledning" list="anl" placeholder="fx Bryllup">
+  <datalist id="anl"><option>Bryllup</option><option>Vielse</option><option>Forlovelse</option><option>Henna</option><option>Fødselsdag</option><option>Konfirmation</option><option>Navngivning</option><option>Firmafest</option></datalist>
+
+  <label>Pakke</label>
+  <div id="pakker" class="valg"><div class="hj">Henter pakker…</div></div>
+  <label>Tilvalg</label>
+  <div id="tilvalg" class="valg to"></div>
+  <label>Beskrivelse (står i kontrakten)</label>
+  <textarea id="aftale" placeholder="Udfyldes, når du vælger en pakke. Skriv selv særlige ønsker under."></textarea>
+
+  <div class="r"><div><label>Lejebeløb (kr.)</label><input id="leje" inputmode="decimal" placeholder="aftales senere"></div><div><label>Depositum (kr.)</label><input id="depositum" inputmode="decimal"></div></div>
+  <div id="statusfelt" style="display:none"><label>Status</label><select id="status"><option>Reserveret</option><option>Kontrakt sendt</option><option>Bekræftet</option><option>Afholdt</option><option>Annulleret</option></select></div>
+
+  <details id="flere"><summary>Flere oplysninger (form, adresse, note)</summary>
+    <label>Form</label><input id="form2" list="frm" placeholder="fx Reception">
+    <datalist id="frm"><option>Fest</option><option>Reception</option><option>Middag</option><option>Kun leje af lokale</option></datalist>
+    <label>Adresse</label><input id="adresse">
+    <div class="r"><div><label>Postnr.</label><input id="postnr" inputmode="numeric"></div><div><label>By</label><input id="by"></div></div>
+    <label>Note (kun til dig)</label><input id="note">
+  </details>
+
+  <details id="detalj"><summary>Detaljer – dekoration, brød, baklava, kage (kun til os)</summary>
+    <div class="hj">Kommer ikke med i kontrakten. Brød, baklava, kage og tilvalg står i påmindelsen i kalenderen 7 dage før.</div>
+    <label>Dekoration</label><textarea id="dekoration" placeholder="fx Hvid/guld, buegang ved scenen, lysestager på bordene"></textarea>
+    <label>Farvetema / duge / servietter</label><input id="farver" placeholder="fx Hvide duge, guld servietter">
+    <label>Blomster</label><input id="blomster">
+    <label>Brød</label><input id="broed" placeholder="fx 25 pitabrød + 10 franskbrød">
+    <label>Baklava</label><input id="baklava" placeholder="fx 3 bakker, pistacie">
+    <label>Kage</label><input id="kage" placeholder="fx 3-etagers, 200 pers., hvid">
+    <label>Andre detaljer</label><textarea id="detaljer"></textarea>
+  </details>
+
+  <button id="gem" onclick="gem(false)">Book dagen</button>
+  <button id="fortryd" class="graa" style="display:none" onclick="nulstil()">Fortryd rettelser</button>
+</div>
+
+<div class="kort" id="svar"></div>
+<div class="kort"><h2>Kommende bookinger og kontrakter</h2><div id="liste">Henter…</div></div>
+<div class="lille">Bookinger gemmes i regnearket og kalenderen "Elegance – Bookinger"</div>
+
+<script>
+// Forbindelse til Google Apps Script (projektet "Elegance Fakturering", doPost)
+var API = "https://script.google.com/macros/s/AKfycbww6s9305g46CVvGpYIyWjhPAwpc6s5nsQgodA60KxuaG0FwwmOSlMkXH0DX2-NbpY/exec";
+function api(fn, args, ok, fail) {
+  fetch(API, { method: "POST", credentials: "omit", redirect: "follow", body: JSON.stringify({ fn: fn, args: args }) })
+    .then(function (r) { return r.json(); })
+    .then(function (j) { if (j.ok) ok(j.data); else fail(new Error(j.fejl)); })
+    .catch(function () { fail(new Error("Ingen forbindelse til regnearket. Tjek internettet og prøv igen.")); });
+}
+
+function el(i) { return document.getElementById(i); }
+function esc(s) { return String(s || "").replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" }[c]; }); }
+function kr(n) { return Number(n).toLocaleString("da-DK"); }
+
+var FELTER = ["navn", "dato", "fra", "til", "tlf", "gaester", "email", "anledning", "leje", "depositum", "aftale", "adresse", "postnr", "by", "note",
+  "dekoration", "farver", "blomster", "broed", "baklava", "kage", "detaljer"];
+var DET = ["dekoration", "farver", "blomster", "broed", "baklava", "kage", "detaljer"];
+var RET = "", VIS = "", DEP = "";
+
+/* ---------------------------------- PIN ----------------------------------
+   PIN-koden huskes på telefonen i 8 timer efter sidste brug. Mens den gemte
+   kode tjekkes, er indtastningsfeltet skjult – ellers kunne man taste en
+   forkert kode og alligevel blive lukket ind af den gemte. */
+var P = "", PIN_TID = 8 * 3600 * 1000, ULAAST = false;
+function gemtPin() {
+  try {
+    var p = localStorage.getItem("elegancePin") || "", t = +(localStorage.getItem("elegancePinTid") || 0);
+    if (p && Date.now() - t < PIN_TID) return p;
+    localStorage.removeItem("elegancePin"); localStorage.removeItem("elegancePinTid");
+  } catch (e) { }
+  return "";
+}
+function huskPin(p) { try { localStorage.setItem("elegancePin", p); localStorage.setItem("elegancePinTid", String(Date.now())); } catch (e) { } }
+function glemPin() { try { localStorage.removeItem("elegancePin"); localStorage.removeItem("elegancePinTid"); } catch (e) { } }
+function laast(m) {
+  glemPin(); P = ""; ULAAST = false;
+  el("laas").style.display = "flex"; el("pinindtast").style.display = "flex"; el("pintjek").style.display = "none";
+  el("pinmsg").textContent = m || ""; el("pinknap").disabled = false;
+}
+function tjekker() {
+  el("laas").style.display = "flex"; el("pinindtast").style.display = "none"; el("pintjek").style.display = "block"; el("pinmsg").textContent = "";
+}
+function aaben() { ULAAST = true; el("laas").style.display = "none"; el("pin").value = ""; }
+
+// Alle kald til regnearket går herigennem. Forkert PIN låser altid appen.
+function kald(navn, args, ok, hvor) {
+  api(navn, args, function (d) { if (P) huskPin(P); ok(d); }, function (e) {
+    if (String(e.message).indexOf("PINFEJL") >= 0) return laast("Forkert PIN-kode");
+    if (/For mange|PIN-kode endnu/.test(e.message)) return laast(e.message);
+    (hvor || function (x) { alert("Fejl: " + x.message); })(e);
+  });
+}
+function laasOp() {
+  var p = el("pin").value.trim();
+  if (!p) return;
+  el("pinknap").disabled = true; el("pinmsg").textContent = "Tjekker…";
+  kald("appData", [p], function (d) { P = p; huskPin(p); aaben(); vis(d); },
+    function (x) { el("pinknap").disabled = false; el("pinmsg").textContent = x.message; });
+}
+function start() {
+  P = gemtPin();
+  if (!P) { laast(""); return; }
+  tjekker();
+  kald("appData", [P], function (d) { aaben(); vis(d); },
+    function (x) { el("pinindtast").style.display = "flex"; el("pintjek").style.display = "none"; el("pinmsg").textContent = x.message; P = ""; });
+}
+function hent() {
+  if (!P) { laast(""); return; }
+  kald("appData", [P], vis, function (x) { el("liste").innerHTML = "<span class=fejl>" + esc(x.message) + "</span>"; });
+}
+// Lægges appen væk i mere end 8 timer, skal PIN-koden tastes igen
+document.addEventListener("visibilitychange", function () {
+  if (document.visibilityState === "visible" && ULAAST && !gemtPin()) laast("");
+});
+
+/* --------------------------- PAKKER OG TILVALG ---------------------------- */
+var PAKKER = [], TILVALG = [], AUTO = "", AUTOPRIS = "";
+function visValg(pakke, tilvalg) {
+  var pk = PAKKER.slice(), tv = TILVALG.slice();
+  // En pakke eller et tilvalg, der ikke længere står i arket "Pakker", vises stadig på gamle bookinger
+  if (pakke && !pk.some(function (p) { return p.navn === pakke; })) pk.push({ navn: pakke, indhold: "", pris: "" });
+  (tilvalg || []).forEach(function (t) { if (tv.indexOf(t) < 0) tv.push(t); });
+  el("pakker").innerHTML = "<label class=chk><input type=radio name=pakke value=\"\" onchange=\"valgSkift()\"" + (pakke ? "" : " checked") + "> Ingen pakke</label>" +
+    pk.map(function (p, i) {
+      return "<label class=chk><input type=radio name=pakke value=\"" + esc(p.navn) + "\" onchange=\"valgSkift()\"" + (p.navn === pakke ? " checked" : "") + "> " +
+        esc(p.navn) + (p.pris ? "<span class=pris>" + kr(p.pris) + " kr.</span>" : "") + "</label>";
+    }).join("");
+  el("tilvalg").innerHTML = tv.map(function (t) {
+    return "<label class=chk><input type=checkbox value=\"" + esc(t) + "\" onchange=\"valgSkift()\"" + ((tilvalg || []).indexOf(t) >= 0 ? " checked" : "") + "> " + esc(t) + "</label>";
+  }).join("") || "<div class=hj>Ingen tilvalg i arket Pakker.</div>";
+  PAKKER_VIST = pk;
+  markerValgte();
+}
+var PAKKER_VIST = [];
+function markerValgte() {
+  [].forEach.call(document.querySelectorAll(".chk"), function (l) { var i = l.querySelector("input"); l.classList.toggle("valgt", !!(i && i.checked && i.value)); });
+}
+function valgtPakke() {
+  var r = document.querySelector("input[name=pakke]:checked"), n = r ? r.value : "";
+  for (var i = 0; i < PAKKER_VIST.length; i++) if (PAKKER_VIST[i].navn === n) return PAKKER_VIST[i];
+  return null;
+}
+function valgteTilvalg() {
+  return [].map.call(document.querySelectorAll("#tilvalg input:checked"), function (x) { return x.value; });
+}
+function autoTekst() {
+  var p = valgtPakke(), tv = valgteTilvalg(), t = [];
+  if (p && p.indhold) t.push(p.indhold);
+  if (tv.length) t.push("Tilvalg: " + tv.join(", ") + ".");
+  return t.join("\n");
+}
+// Når pakken eller tilvalg skifter, skrives beskrivelsen om. Det, du selv har skrevet under, bliver stående.
+function valgSkift() {
+  markerValgte();
+  var ny = autoTekst(), a = el("aftale").value;
+  if (AUTO && a.indexOf(AUTO) === 0) a = a.slice(AUTO.length).replace(/^\n+/, "");
+  el("aftale").value = ny + (a ? (ny ? "\n" : "") + a : "");
+  AUTO = ny;
+  var p = valgtPakke(), leje = el("leje").value.trim();
+  if (p && p.pris && (leje === "" || leje === AUTOPRIS)) { el("leje").value = String(p.pris); AUTOPRIS = String(p.pris); }
+  else if (!p && AUTOPRIS && leje === AUTOPRIS) { el("leje").value = ""; AUTOPRIS = ""; }
+}
+
+/* -------------------------------- LISTE ---------------------------------- */
+function vis(d) {
+  DEP = d.depositum;
+  if (!RET && !el("depositum").value) el("depositum").value = DEP;
+  if (d.pakker) {
+    var foerste = !PAKKER.length && !TILVALG.length;
+    PAKKER = d.pakker; TILVALG = d.tilvalg || [];
+    if (foerste && !RET) visValg("", []);
+  }
+  if (!d.kommende.length) { el("liste").innerHTML = "Ingen kommende bookinger."; return; }
+  el("liste").innerHTML = d.kommende.map(function (b) {
+    var aktiv = b.status !== "Annulleret";
+    return "<div class=b><div class=d>" + esc(b.dato) + " <span class=\"" + esc(b.status) + " st\">" + esc(b.status) + "</span></div>" +
+      "<div class=s>" + esc(b.nr) + " · " + esc(b.kunde) + (b.anledning ? " · " + esc(b.anledning) : "") + (b.gaester ? " · " + esc(b.gaester) + " gæster" : "") + (b.tid ? " · " + esc(b.tid) : "") + "</div>" +
+      "<div class=s>" + (b.sendt ? "Kontrakt sendt" : (b.kontrakt ? "Kontrakt klar – ikke sendt" : "Ingen kontrakt endnu")) + (b.email ? "" : " · mangler e-mail") + "</div>" +
+      "<div class=knapper><button class=lys onclick=\"ret('" + b.nr + "')\">Ret / detaljer</button>" +
+      (aktiv ? "<button class=lys onclick=\"visK('" + b.nr + "')\">Se kontrakt</button>" : "") +
+      (aktiv && b.email ? "<button class=lys onclick=\"send('" + b.nr + "',this)\">" + (b.sendt ? "Send igen" : "Send") + "</button>" : "") + "</div></div>";
+  }).join("");
+}
+
+/* ------------------------------- FORMULAR -------------------------------- */
+function felter() {
+  var f = {};
+  FELTER.forEach(function (x) { f[x] = el(x).value; });
+  var p = valgtPakke();
+  f.pakke = p ? p.navn : "";
+  f.tilvalg = valgteTilvalg().join(", ");
+  f.form = el("form2").value; f.status = el("status").value; f.pin = P;
+  return f;
+}
+function nulstil() {
+  RET = "";
+  FELTER.forEach(function (x) { el(x).value = ""; });
+  el("form2").value = ""; el("fra").value = "16:00"; el("til").value = "24:00"; el("depositum").value = DEP;
+  AUTO = ""; AUTOPRIS = ""; visValg("", []);
+  el("titel").textContent = "Ny booking"; el("gem").textContent = "Book dagen";
+  el("fortryd").style.display = "none"; el("statusfelt").style.display = "none"; el("retbar").style.display = "none";
+  el("flere").open = false; el("detalj").open = false;
+}
+function ret(nr) {
+  kald("appHentBooking", [nr, P], function (b) {
+    RET = nr;
+    FELTER.forEach(function (x) { el(x).value = (b[x] === undefined || b[x] === null) ? "" : b[x]; });
+    el("til").value = "24:00";   // sluttidspunktet er altid 24.00
+    el("form2").value = b.form || ""; el("status").value = b.status;
+    visValg(b.pakke || "", String(b.tilvalg || "").split(",").map(function (x) { return x.trim(); }).filter(String));
+    var a = autoTekst(), p = valgtPakke();
+    AUTO = a && el("aftale").value.indexOf(a) === 0 ? a : "";
+    AUTOPRIS = p && p.pris && String(el("leje").value) === String(p.pris) ? String(p.pris) : "";
+    el("titel").textContent = "Ret booking " + nr; el("gem").textContent = "Gem og lav kontrakten om";
+    el("fortryd").style.display = "block"; el("statusfelt").style.display = "block"; el("retbar").style.display = "block";
+    el("flere").open = !!(b.form || b.adresse || b.note);
+    el("detalj").open = DET.some(function (x) { return !!b[x]; });
+    el("svar").style.display = "none"; window.scrollTo(0, 0);
+  });
+}
+function resultat(r, email) {
+  var s = el("svar");
+  s.style.display = "block";
+  s.innerHTML = "<div class=ok>✓ " + esc(r.besked).replace(/\n/g, "<br>") + "</div>" +
+    (r.kontraktFejl ? "<p class=fejl>Kontrakten kunne ikke laves: " + esc(r.kontraktFejl) + "</p>"
+      : "<div class=knapper><button class=lys onclick=\"visK('" + r.nr + "')\">Se kontrakt</button>" +
+        (email ? "<button class=lys onclick=\"send('" + r.nr + "',this)\">" + (r.sendt ? "Send igen" : "Send til kunden") + "</button>" : "") + "</div>") +
+    (email ? "" : "<p class=s>Tilføj e-mail for at kunne sende kontrakten.</p>");
+}
+function gem(tving) {
+  var f = felter();
+  if (!f.navn.trim() || !f.dato) { alert("Skriv navn og dato."); return; }
+  f.tving = tving;
+  if (RET) f.nr = RET;
+  var b = el("gem"), tekst = b.textContent;
+  b.disabled = true; b.textContent = "Gemmer…";
+  kald(RET ? "appRetBooking" : "appGemBooking", [f], function (r) {
+    b.disabled = false; b.textContent = tekst;
+    if (r.konflikt) { if (confirm(r.konflikt + "\n\nVil du gemme alligevel?")) gem(true); return; }
+    nulstil(); resultat(r, f.email); window.scrollTo(0, 0); hent();
+  }, function (x) { b.disabled = false; b.textContent = tekst; alert("Fejl: " + x.message); });
+}
+
+/* ------------------------------- KONTRAKT -------------------------------- */
+function visK(nr) {
+  VIS = nr;
+  el("ksend").disabled = false; el("ksend").textContent = "Send til kunden";
+  el("kframe").srcdoc = "<p style=\"font-family:Arial;padding:20px\">Henter kontrakten…</p>";
+  el("kvis").style.display = "flex";
+  kald("appKontraktHtml", [nr, P], function (h) { el("kframe").srcdoc = h; },
+    function (x) { el("kframe").srcdoc = "<p style=\"font-family:Arial;padding:20px;color:#c62828\">" + esc(x.message) + "</p>"; });
+}
+function lukK() { el("kvis").style.display = "none"; VIS = ""; }
+function sendFraVis() { if (VIS) send(VIS, el("ksend")); }
+function send(nr, knap) {
+  if (!confirm("Send lejekontrakten for " + nr + " til kunden nu?")) return;
+  var t = knap.textContent;
+  knap.disabled = true; knap.textContent = "Sender…";
+  kald("appSendKontrakt", [nr, P], function (m) { knap.textContent = "✓ Sendt"; alert(m); hent(); },
+    function (x) { knap.disabled = false; knap.textContent = t; alert("Fejl: " + x.message); });
+}
+
+start();
+</script>
+</body>
+</html>
