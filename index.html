@@ -86,7 +86,7 @@ details{margin-top:10px}summary{color:#9a7b3c;font-size:14px}
   <div id="retbar">Du retter en booking. Kontrakten laves om, når du gemmer.</div>
   <label>Kundens navn *</label><input id="navn" autocomplete="off">
   <label>Dato *</label><input id="dato" type="date">
-  <div class="r"><div><label>Fra</label><input id="fra" type="time" value="16:00"></div><div><label>Til</label><input id="til" value="24:00" readonly style="color:#777"></div></div>
+  <div class="r"><div><label>Fra</label><input id="fra" type="time" value="16:00"></div><div><label>Til (står i kontrakten)</label><select id="til"></select></div></div>
   <div class="r"><div><label>Telefon</label><input id="tlf" type="tel"></div><div><label>Gæster</label><input id="gaester"></div></div>
   <label>E-mail (til kontrakten)</label><input id="email" type="email" autocapitalize="off">
   <label>Anledning</label><input id="anledning" list="anl" placeholder="fx Bryllup">
@@ -252,6 +252,28 @@ function valgSkift() {
   else if (!p && AUTOPRIS && leje === AUTOPRIS) { el("leje").value = ""; AUTOPRIS = ""; }
 }
 
+/* ----------------------------- SLUTTIDSPUNKT ----------------------------- */
+// Standard er kl. 24.00; kan rettes i halve timer fra 18.00 til 04.00
+function saetTil(v) {
+  var s = el("til"), t = String(v || "24:00").replace(".", ":");
+  if (!/^\d{1,2}:\d{2}$/.test(t)) t = "24:00";
+  if (t.length === 4) t = "0" + t;
+  if (!s.options.length) {
+    for (var m = 18 * 60; m <= 28 * 60; m += 30) {
+      var h = Math.floor(m / 60), x = (h > 24 ? "0" + (h - 24) : (h < 10 ? "0" : "") + h) + ":" + (m % 60 ? "30" : "00");
+      if (h === 24 && m % 60) x = "00:30";
+      var o = document.createElement("option");
+      o.value = x; o.textContent = x === "24:00" ? "24:00 (midnat)" : x;
+      s.appendChild(o);
+    }
+  }
+  if (![].some.call(s.options, function (o) { return o.value === t; })) {
+    var n = document.createElement("option"); n.value = t; n.textContent = t; s.appendChild(n);
+  }
+  s.value = t;
+}
+saetTil("24:00");
+
 /* -------------------------------- LISTE ---------------------------------- */
 function vis(d) {
   DEP = d.depositum;
@@ -286,7 +308,7 @@ function felter() {
 function nulstil() {
   RET = "";
   FELTER.forEach(function (x) { el(x).value = ""; });
-  el("form2").value = ""; el("fra").value = "16:00"; el("til").value = "24:00"; el("depositum").value = DEP;
+  el("form2").value = ""; el("fra").value = "16:00"; saetTil("24:00"); el("depositum").value = DEP;
   AUTO = ""; AUTOPRIS = ""; visValg("", []);
   el("titel").textContent = "Ny booking"; el("gem").textContent = "Book dagen";
   el("fortryd").style.display = "none"; el("statusfelt").style.display = "none"; el("retbar").style.display = "none";
@@ -296,7 +318,7 @@ function ret(nr) {
   kald("appHentBooking", [nr, P], function (b) {
     RET = nr;
     FELTER.forEach(function (x) { el(x).value = (b[x] === undefined || b[x] === null) ? "" : b[x]; });
-    el("til").value = "24:00";   // sluttidspunktet er altid 24.00
+    saetTil(b.til);
     el("form2").value = b.form || ""; el("status").value = b.status;
     visValg(b.pakke || "", String(b.tilvalg || "").split(",").map(function (x) { return x.trim(); }).filter(String));
     var a = autoTekst(), p = valgtPakke();
